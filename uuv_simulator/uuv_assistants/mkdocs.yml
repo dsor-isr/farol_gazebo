@@ -1,0 +1,4 @@
+site_name: UUV Assistants
+
+nav:
+  - Overview: "README.md"

@@ -1,0 +1,140 @@
+<?xml version="1.0"?>
+<robot name="myellow" xmlns:xacro="http://www.ros.org/wiki/xacro" >
+  <xacro:arg name="debug" default="0"/>
+  <xacro:arg name="namespace" default="myellow"/>
+  <xacro:arg name="inertial_reference_frame" default="world"/>
+
+  <!-- Include the ROV macro file -->
+  <xacro:include filename="$(find myellow_vehicle)/urdf/base.xacro"/>
+  <xacro:include filename="$(find myellow_vehicle)/urdf/gazebo.xacro"/>
+
+  <!-- Create the myellow -->
+  <xacro:myellow_base 
+    namespace="$(arg namespace)" 
+    inertial_reference_frame="$(arg inertial_reference_frame)">
+    <!-- The underwater object plugin is given as an input block parameter to
+    allow the addition of external models of manipulator units -->
+    <gazebo>
+      <plugin name="uuv_plugin" filename="libuuv_underwater_object_ros_plugin.so">
+        <fluid_density>1028.0</fluid_density>
+        <flow_velocity_topic>hydrodynamics/current_velocity</flow_velocity_topic>
+        <debug>$(arg debug)</debug>
+          <!-- Adding the hydrodynamic and hydrostatic parameters for the vehicle-->
+        <xacro:myellow_hydro_model namespace="$(arg namespace)"/>
+      </plugin>
+    </gazebo>
+  </xacro:myellow_base>
+
+  <!-- Joint state publisher plugin -->
+  <xacro:default_joint_state_publisher namespace="$(arg namespace)" update_rate="50"/>
+
+  <!-- Include extra sensors -->
+
+  <!-- Mount a SONAR  -->
+  <!-- vertical_fov_pixels="114" equiv. to 20 deg -->
+  <xacro:blueview_p900_gpu 
+    namespace="$(arg namespace)" 
+    parent_link="$(arg namespace)/base_link" 
+    suffix=""
+    mass="0.001"
+    camera_name="blueview_p900"
+    update_rate="0.5"
+    horizontal_fov="2.2689280276"
+    vertical_fov_pixels="114"
+    max_distance="30"
+    min_distance="2"
+    ray_skips="1"
+    plot_scaler="2.5"
+    debug="false"
+    scale="1.0 1.0 1.0">     
+    <inertia ixx="0.00001" ixy="0.0" ixz="0.0" iyy="0.00001" iyz="0.0" izz="0.00001"/>
+    <origin xyz="0.5 0 0" rpy="0 0 0"/>
+  </xacro:blueview_p900_gpu>>
+
+  <!-- Mount a gimbaled camera  -->
+
+  <link name="$(arg namespace)/gimbal_link">
+    <xacro:box_inertial x="0.001" y="0.001" z="0.001" mass="0.001">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </xacro:box_inertial>
+  </link>
+
+  <joint name="$(arg namespace)/joint_camera_gimbal" type="continuous">
+    <origin xyz="0.45 0 -0.20" rpy="0 0.0 0"/>
+    <parent link="$(arg namespace)/base_link"/>
+    <child link="$(arg namespace)/gimbal_link"/>
+    <axis xyz="0 1 0"/>
+    <limit upper="1.57" lower="-1.57" effort="100.0" velocity="10" />
+    <dynamics damping="1" friction="1"/>
+  </joint>
+
+  <transmission name="$(arg namespace)/camera_gimbal_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="$(arg namespace)/joint_camera_gimbal">
+    <hardwareInterface>hardware_interface/VelocityJointInterface
+      <!-- <hardwareInterface>hardware_interface/EffortJointInterface -->
+  </hardwareInterface>
+    </joint>
+    <actuator name="$(arg namespace)/camera_gimbal_motor">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>/$(arg namespace)</robotNamespace>
+    </plugin>
+  </gazebo>
+
+  <!-- Front camera -->
+  <xacro:regular_camera_plugin_macro 
+    namespace="$(arg namespace)" 
+    parent_link="$(arg namespace)/gimbal_link" 
+    suffix="_front" 
+    topic="camera" 
+    mass="0.015" 
+    update_rate="30" 
+    hfov="1.5" 
+    width="960" 
+    height="540" 
+    stddev="0.02"
+    scale="1.0">     
+    <inertia ixx="0.00001" ixy="0.0" ixz="0.0" iyy="0.00001" iyz="0.0" izz="0.00001"/>
+    <origin xyz="0.14 0 0" rpy="0 0.0 0"/>
+  </xacro:regular_camera_plugin_macro>
+
+  <!-- Bottom camera  -->
+  <xacro:regular_camera_plugin_macro 
+    namespace="$(arg namespace)" 
+    parent_link="$(arg namespace)/base_link" 
+    suffix="_bottom" 
+    topic="camera" 
+    mass="0.015" 
+    update_rate="30" 
+    hfov="1.5" 
+    width="960" 
+    height="540" 
+    stddev="0.02" 
+    scale="1.0">     
+    <inertia ixx="0.00001" ixy="0.0" ixz="0.0" iyy="0.00001" iyz="0.0" izz="0.00001"/>
+    <origin xyz="0 0 -0.3" rpy="0 1.57 0"/>
+  </xacro:regular_camera_plugin_macro>
+
+  <!-- Side camera (facing vehicle)  -->
+  <xacro:regular_camera_plugin_macro 
+    namespace="$(arg namespace)" 
+    parent_link="$(arg namespace)/base_link" 
+    suffix="_side" 
+    topic="camera" 
+    mass="0.015" 
+    update_rate="30" 
+    hfov="0.75" 
+    width="960" 
+    height="540" 
+    stddev="0.02" 
+    scale="1.0">     
+    <inertia ixx="0.00001" ixy="0.0" ixz="0.0" iyy="0.00001" iyz="0.0" izz="0.00001"/>
+    <origin xyz="0 -3 0" rpy="0 0 1.57"/>
+  </xacro:regular_camera_plugin_macro>
+
+</robot>

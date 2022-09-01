@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>farol_vehicles</name>
+  <version>1.0.0</version>
+  <description>Contains all the DSOR underwater vehicles</description>
+
+  <author email="joao.pedro.cruz@tecnico.ulisboa.pt">Joao Cruz</author>
+  <author email="marcelo.jacinto@tecnico.ulisboa.pt">Marcelo Jacinto</author>
+  <author email="david.souto@tecnico.ulisboa.pt">David Souto</author>
+  <author email="andre.potes@tecnico.ulisboa.pt">Andre Potes</author>
+
+  <maintainer email="joao.pedro.cruz@tecnico.ulisboa.pt">Joao Cruz</maintainer>
+  <maintainer email="marcelo.jacinto@tecnico.ulisboa.pt">Marcelo Jacinto</maintainer>
+  <maintainer email="david.souto@tecnico.ulisboa.pt">David Souto</maintainer>
+  <maintainer email="andre.potes@tecnico.ulisboa.pt">Andre Potes</maintainer>
+
+  <license>MIT</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <exec_depend>uuv_assistants</exec_depend>
+  <exec_depend>uuv_auv_control_allocator</exec_depend>
+  <exec_depend>uuv_control_cascaded_pid</exec_depend>
+  <exec_depend>uuv_control_msgs</exec_depend>
+  <exec_depend>uuv_control_utils</exec_depend>
+  <exec_depend>uuv_thruster_manager</exec_depend>
+  <exec_depend>uuv_trajectory_control</exec_depend>
+  <exec_depend>uuv_descriptions</exec_depend>
+  <exec_depend>uuv_gazebo</exec_depend>
+  <exec_depend>uuv_gazebo_plugins</exec_depend>
+  <exec_depend>uuv_gazebo_ros_plugins</exec_depend>
+  <exec_depend>uuv_gazebo_ros_plugins_msgs</exec_depend>
+  <exec_depend>uuv_gazebo_worlds</exec_depend>
+  <exec_depend>uuv_sensor_ros_plugins_msgs</exec_depend>
+  <exec_depend>uuv_sensor_ros_plugins</exec_depend>
+  <exec_depend>uuv_world_plugins</exec_depend>
+  <exec_depend>uuv_world_ros_plugins</exec_depend>
+  <exec_depend>uuv_world_ros_plugins_msgs</exec_depend>
+
+  <export>
+    <metapackage/>
+  </export>
+</package>

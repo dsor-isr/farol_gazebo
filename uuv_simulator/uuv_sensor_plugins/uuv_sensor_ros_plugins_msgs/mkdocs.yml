@@ -1,0 +1,4 @@
+site_name: UUV Sensor ROS Plugins Messages
+
+nav:
+  - Overview: "README.md"

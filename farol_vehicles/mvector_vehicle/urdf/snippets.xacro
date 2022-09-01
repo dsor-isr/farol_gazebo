@@ -1,0 +1,113 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!--                                                                      -->
+  <!-- MACRO FOR THRUSTER UNITS  -->
+  <!--                                                                      -->
+
+  <!-- Provide the propeller mesh in a separate file with the rotation axis
+  over propeller's frame X-axis in DAE (Collada) or STL format.
+  -->
+  <xacro:property name="prop_mesh_file" value="file://$(find mvector_vehicle)/meshes/propeller.dae"/>
+
+  <!--
+    Thruster macro with integration of joint and link. The thrusters should
+    be initialized in the actuators.xacro file.
+  -->
+  <xacro:macro name="thruster_macro" params="robot_namespace thruster_id *origin">
+
+    <!--
+    Dummy link as place holder for the thruster frame,
+    since thrusters can often be inside the collision geometry
+    of the vehicle and may cause internal collisions if set otherwise
+    -->
+    <link name="${robot_namespace}/thruster_${thruster_id}">
+
+      <visual>
+        <geometry>
+          <mesh filename="${prop_mesh_file}" scale="1 1 1" />
+        </geometry>
+      </visual>
+
+      <inertial>
+        <mass value="0.001" />
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <inertia ixx="0.000000017" ixy="0.0" ixz="0.0"
+               iyy="0.000000017" iyz="0.0"
+               izz="0.000000017" />
+      </inertial>
+    </link>
+
+    <!-- Joint between thruster link and vehicle base link -->
+    <joint name="${robot_namespace}/thruster_${thruster_id}_joint" type="continuous">
+      <xacro:insert_block name="origin" />
+      <axis xyz="1 0 0" />
+      <parent link="${robot_namespace}/base_link" />
+      <child link="${robot_namespace}/thruster_${thruster_id}" />
+    </joint>
+
+    <gazebo>
+      <!-- Thruster ROS plugin -->
+      <plugin name="${robot_namespace}_${thruster_id}_thruster_model" filename="libuuv_thruster_ros_plugin.so">
+        <!-- Name of the thruster link -->
+        <linkName>${robot_namespace}/thruster_${thruster_id}</linkName>
+
+        <!-- Name of the joint between thruster and vehicle base link -->
+        <jointName>${robot_namespace}/thruster_${thruster_id}_joint</jointName>
+
+        <!-- Make the thruster aware of its id -->
+        <thrusterID>${thruster_id}</thrusterID>
+
+        <!-- Gain of the input command signal -->
+        <gain>45</gain>
+
+        <!-- Maximum allowed input value for the input signal for thruster unit -->
+        <clampMax>100</clampMax>
+
+        <!-- Minimum allowed value for the input signal for thruster unit -->
+        <clampMin>-100</clampMin>
+
+        <!-- Minimum and maximum thrust force output allowed -->
+        <thrustMin>-36</thrustMin>
+        <thrustMax>36</thrustMax>
+
+        <!-- Value from 0 to 1 to set the efficiency of the output thrust force. Default value is 1.0 -->
+        <thrust_efficiency>1</thrust_efficiency>
+        <propeller_efficiency>1</propeller_efficiency>
+
+        <!-- 1) First order model -->
+        <dynamics>
+          <type>FirstOrder</type>
+          <timeConstant>0.346</timeConstant>
+        </dynamics>
+
+        <!-- Thrust curve conversion -->
+        <conversion>
+          <type>Bessa</type>
+          <rotorConstantL>0.00000177778</rotorConstantL>
+          <rotorConstantR>0.00000177778</rotorConstantR>
+          <deltaL>0.0</deltaL>
+          <deltaR>0.0</deltaR>
+        </conversion>
+
+      </plugin>
+    </gazebo>
+
+    <!-- Make the thruster not be affected by collisions with other object -->
+    <gazebo reference="${robot_namespace}/thruster_${thruster_id}">
+      <selfCollide>false</selfCollide>
+    </gazebo>
+  </xacro:macro>
+
+  <!--- Thruster manager that translates all vector thrust forces/moments from DSOR stack to the UUV thrusters topics -->
+  <xacro:macro name="thruster_manager_macro" params="robot_namespace number_thrusters dsor_topic_thrusters">
+    <gazebo>
+      <plugin name="${robot_namespace}_thruster_manager" filename="libuuv_thruster_manager_ros_plugin.so">
+        <!-- Make the thruster manager aware of the number of thrusters -->
+        <thrustersNumber>${number_thrusters}</thrustersNumber>
+        <dsorTopicThrusters>${dsor_topic_thrusters}</dsorTopicThrusters>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+
+</robot>

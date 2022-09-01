@@ -1,0 +1,124 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <model name="expo_lisbon_doca">
+    <static>true</static>
+    <link name="seabed">
+      <collision name="seabed">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://expo_seabed/meshes/ExpoLisbon.dae</uri>
+            <scale>1.0 1.0 1.0</scale>
+          </mesh>
+        </geometry>
+      </collision>
+
+      <visual name="seabed">
+        <cast_shadows>true</cast_shadows>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://expo_seabed/meshes/ExpoLisbon.dae</uri>
+            <scale>1.0 1.0 1.0</scale>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+
+    <link name="ocean_link">
+      <visual name="ocean_surface">
+        <pose>-49.0 -84.0 0 0 0 -0.02</pose>
+        <cast_shadows>false</cast_shadows>
+        <geometry>
+          <mesh>
+            <uri>file://Media/models/sea_surface_1000m_x_1000m.dae</uri>
+            <scale>0.374 0.70 1</scale>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://Media/materials/scripts/waves.material</uri>
+            <name>Marine3D/SimpleWaves</name>
+          </script>
+        </material>
+      </visual>
+      
+      <visual name="ocean_below">
+        <pose>-49.0 -84.0 0 3.14 0 -0.02</pose>
+        <cast_shadows>false</cast_shadows>
+        <geometry>
+          <mesh>
+            <uri>file://Media/models/sea_surface_1000m_x_1000m.dae</uri>
+            <scale>0.374 0.70 1</scale>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://Media/materials/scripts/water.material</uri>
+            <name>Marine3D/SimpleWaves</name>
+          </script>
+        </material>
+      </visual>
+
+      <visual name="north_wall">
+        <pose>-41.593 266.125 -12 0 0 -0.02</pose>        
+        <geometry>
+          <box>                        
+            <size>374 0.1 24</size>
+          </box>
+        </geometry>                
+        <material>
+          <script>
+            <uri>file://Media/materials/scripts/water.material</uri>
+            <name>Marine3D/SeaWall</name>
+          </script>
+        </material>
+      </visual>
+
+      <visual name="south_wall">
+        <pose>-55.593 -432.874 -12 0 0 -0.02</pose>        
+        <geometry>
+          <box>                        
+            <size>374 0.1 24</size>
+          </box>
+        </geometry>                
+        <material>
+          <script>
+            <uri>file://Media/materials/scripts/water.material</uri>
+            <name>Marine3D/SeaWall</name>
+          </script>
+        </material>
+      </visual>
+
+      <visual name="east_wall">
+        <pose>-235.593 -80.875 -12 0 0 -0.02</pose>        
+        <geometry>
+          <box>                        
+            <size>0.1 700 24</size>
+          </box>
+        </geometry>                
+        <material>
+          <script>
+            <uri>file://Media/materials/scripts/water.material</uri>
+            <name>Marine3D/SeaWall</name>
+          </script>
+        </material>
+      </visual>
+
+      <visual name="west_wall">
+        <pose>137.407 -86.875 -12 0 0 -0.02</pose>        
+        <geometry>
+          <box>                        
+            <size>0.1 700 24</size>
+          </box>
+        </geometry>                
+        <material>
+          <script>
+            <uri>file://Media/materials/scripts/water.material</uri>
+            <name>Marine3D/SeaWall</name>
+          </script>
+        </material>
+      </visual>
+    </link>
+  </model> 
+</sdf>

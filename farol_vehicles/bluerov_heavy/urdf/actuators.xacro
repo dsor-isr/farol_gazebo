@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <!-- Adding the thruster units with the macro created in snippets.xacro -->
+    <!--
+    Important:
+    - The thruster IDs must be given as integers and must be unique to each thruster unit
+    - The thruster pose in the <origin> block is relative to the body's center of mass. Be
+    aware that Gazebo does not use the SNAME convention per default.
+    -->
+
+    <!-- THRUSTER 1 - Horizontal-front starboard -->
+    <xacro:thruster_macro robot_namespace="${namespace}" thruster_id="0">
+        <origin xyz="0.1355 -0.1 -0.0725" rpy="0 0 0.7853981634"/>
+    </xacro:thruster_macro>
+
+    <!-- THRUSTER 2 - Horizontal-front portside -->
+    <xacro:thruster_macro robot_namespace="${namespace}" thruster_id="1">
+        <origin xyz="0.1355 0.1 -0.0725" rpy="0 0 -0.7853981634"/>
+    </xacro:thruster_macro>
+
+    <!-- THRUSTER 3 - Horizontal-back starboard -->
+    <xacro:thruster_macro robot_namespace="${namespace}" thruster_id="2">
+        <origin xyz="-0.1475 -0.1 -0.0725" rpy="0 0 2.3561944902"/>
+    </xacro:thruster_macro>
+
+    <!-- THRUSTER 4 - Horizontal-back portside -->
+    <xacro:thruster_macro robot_namespace="${namespace}" thruster_id="3">
+        <origin xyz="-0.1475 0.1 -0.0725" rpy="0 0 -2.3561944902"/>
+    </xacro:thruster_macro>
+
+    <!-- THRUSTER 5 - Vertical-front starboard -->
+    <xacro:thruster_macro robot_namespace="${namespace}" thruster_id="4">
+        <origin xyz="0.12 -0.22 -0.005" rpy="0 -1.5707963268 0"/>
+    </xacro:thruster_macro>
+
+    <!-- THRUSTER 6 - Vertical-front portside -->
+    <xacro:thruster_macro robot_namespace="${namespace}" thruster_id="5">
+        <origin xyz="0.12 0.22 -0.005" rpy="0 -1.5707963268 0"/>
+    </xacro:thruster_macro>
+
+    <!-- THRUSTER 7 - Vertical-back starboard -->
+    <xacro:thruster_macro robot_namespace="${namespace}" thruster_id="6">
+        <origin xyz="-0.12 -0.22 -0.005" rpy="0 -1.5707963268 0"/>
+    </xacro:thruster_macro>
+
+    <!-- THRUSTER 8 - Vertical-back portside -->
+    <xacro:thruster_macro robot_namespace="${namespace}" thruster_id="7">
+        <origin xyz="-0.12 0.22 -0.005" rpy="0 -1.5707963268 0"/>
+    </xacro:thruster_macro>
+
+    <!-- Thruster manager plugin to translate DSOR stack thruster msgs towards the UUV simulator -->
+    <xacro:thruster_manager_macro robot_namespace="${namespace}" number_thrusters="8" dsor_topic_thrusters="/${namespace}/thrusters/rpm_command">
+    </xacro:thruster_manager_macro>
+
+</robot>

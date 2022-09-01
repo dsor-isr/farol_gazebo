@@ -1,0 +1,4 @@
+site_name: UUV Gazebo ROS Plugins Msgs
+
+nav:
+  - Overview: "README.md"

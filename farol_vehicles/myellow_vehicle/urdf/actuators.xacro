@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <!-- Adding the thruster units with the macro created in snippets.xacro -->
+  <!--
+    Important:
+    - The thruster IDs must be given as integers and must be unique to each thruster unit
+    - The thruster pose in the <origin> block is relative to the body's center of mass. Be
+    aware that Gazebo does not use the SNAME convention per default.
+  -->
+
+      <!--left horizontal thruster-->
+    <xacro:thruster_macro robot_namespace="${namespace}" thruster_id="0">  
+      <origin xyz="-0.290 0.14 0.011" rpy="0 0 0" />
+    </xacro:thruster_macro>
+
+    <!--right horizontal thruster-->
+    <xacro:thruster_macro robot_namespace="${namespace}" thruster_id="1">
+      <origin xyz="-0.290 -0.140 0.011" rpy="0 0 0" />
+    </xacro:thruster_macro>
+
+    <!--left vertical thruster-->
+    <xacro:thruster_macro robot_namespace="${namespace}" thruster_id="2">
+      <origin xyz="-0.012 -0.140 -0.107" rpy="0 -${0.5*pi} 0" />
+    </xacro:thruster_macro>
+
+    <!--right vertical thruster-->
+    <xacro:thruster_macro robot_namespace="${namespace}" thruster_id="3">
+      <origin xyz="-0.012 0.140 -0.107" rpy="0 -${0.5*pi} 0" />
+    </xacro:thruster_macro>
+
+    <!-- Thruster manager plugin to translate DSOR stack thruster msgs towards the UUV simulator -->
+    <xacro:thruster_manager_macro robot_namespace="${namespace}" number_thrusters="4" dsor_topic_thrusters="/${namespace}/thrusters/rpm_command">
+    </xacro:thruster_manager_macro>
+
+  </robot>

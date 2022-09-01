@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+<!-- Copyright (c) 2016 The UUV Simulator Authors.
+     All rights reserved.
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.-->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- Macro for the altimeter that emulated the bluerov altimeter sold by bluerobotics -->
+    <xacro:macro name="bluerov_altimeter" params="namespace suffix parent_link *origin">
+        <xacro:altimeter_sensor_macro
+            namespace="${namespace}"
+            suffix="${suffix}"
+            parent_link="${parent_link}"
+            min_range="0.01"
+            max_range="30.0"
+            field_of_view="${30*pi/180}"
+            dae_file="ping_blue_robotics.dae"> <!-- field_of_view in degress -->
+            <xacro:insert_block name="origin" />
+        </xacro:altimeter_sensor_macro>
+    </xacro:macro>
+
+    <!-- Macro for the altimeter that emulated the real tritech altimeter used in the farol vehicles -->
+    <xacro:macro name="farol_altimeter" params="namespace suffix parent_link *origin">
+        <xacro:altimeter_sensor_macro
+            namespace="${namespace}"
+            suffix="${suffix}"
+            parent_link="${parent_link}"
+            min_range="0.3"
+            max_range="50.0"
+            field_of_view="${6*pi/180}"
+            dae_file="ping_blue_robotics.dae"> <!-- field_of_view in degress -->
+            <xacro:insert_block name="origin" />
+        </xacro:altimeter_sensor_macro>
+    </xacro:macro>
+
+    <!-- Altimeter Sensor Snippets -->
+    <xacro:macro name="altimeter_sensor_macro" params="namespace suffix parent_link min_range max_range field_of_view dae_file *origin">
+        <!-- Sensor link -->
+        <link name="${namespace}/altimeter${suffix}_link">
+            <inertial>
+            <inertia ixx="0.00001" ixy="0.0" ixz="0.0" iyy="0.00001" iyz="0.0" izz="0.00001" />
+            <mass value="0.01" />
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            </inertial>
+            <visual>
+            <geometry>
+                <mesh filename="file://$(find uuv_sensor_ros_plugins)/meshes/${dae_file}" scale="1 1 1"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 -${0.5*pi}"/>
+            </visual>
+            <xacro:no_collision/>
+        </link>
+
+        <joint name="${namespace}_altimeter${suffix}_joint" type="revolute">
+            <xacro:insert_block name="origin" />
+            <parent link="${parent_link}" />
+            <child link="${namespace}/altimeter${suffix}_link" />
+            <limit upper="0" lower="0" effort="0" velocity="0" />
+            <axis xyz="1 0 0"/>
+        </joint>
+
+        <gazebo reference="${namespace}/altimeter${suffix}_link">
+            <sensor type="ray" name="sonar">
+                <pose>0 0 0 0 0 0</pose>
+                <update_rate>15.0</update_rate>
+                <ray>
+                <scan>
+                    <horizontal>
+                    <samples>5.0</samples>
+                    <resolution>1</resolution>
+                    <min_angle>-${15*pi/180}</min_angle>
+                    <max_angle>${15*pi/180}</max_angle>
+                    </horizontal>
+                    <vertical>
+                    <samples>5.0</samples>
+                    <resolution>1</resolution>
+                    <min_angle>-${15*pi/180}</min_angle>
+                    <max_angle>${15*pi/180}</max_angle>
+                    </vertical>
+                </scan>
+                <range>
+                    <min>${min_range}</min>
+                    <max>${max_range}</max>
+                    <resolution>0.001</resolution>
+                </range>
+                </ray>
+                <plugin filename="libuuv_gazebo_ros_altimeter_plugin.so" name="libuuv_gazebo_altimeter${suffix}_plugin">
+                    <gaussianNoise>0.005</gaussianNoise>
+                    <alwaysOn>true</alwaysOn>
+                    <updateRate>15.0</updateRate>
+                    <topicName>measurement/position</topicName>
+                    <frameName>${namespace}/altimeter${suffix}_link</frameName>
+                    <fov>${field_of_view}</fov>
+                    <radiation>ultrasound</radiation>
+                    <namespace>${namespace}</namespace>
+                </plugin>
+            </sensor>
+        </gazebo>
+    </xacro:macro>
+</robot>

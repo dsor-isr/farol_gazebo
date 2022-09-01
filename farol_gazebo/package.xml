@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>farol_gazebo</name>
+  <version>1.0.0</version>
+  <description>farol_gazebo contains Gazebo plugins and ROS packages for modeling and simulating unmanned underwater vehicles</description>
+
+  <maintainer email="marcelo.jacinto@tecnico.ulisboa.pt">Marcelo Jacinto</maintainer>
+  <maintainer email="david.souto@tecnico.ulisboa.pt">David Souto</maintainer>
+  <maintainer email="andre.potes@tecnico.ulisboa.pt">Andre Potes</maintainer>
+  <maintainer email="jquintas@gmail.com">Joao Quintas</maintainer>
+  <maintainer email="jcruz.pedro.cruz@tecnico.ulisboa.pt">Joao Cruz</maintainer>
+
+  <license>MIT</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <exec_depend>dsor_bringup</exec_depend>
+  <exec_depend>dsor_vehicles</exec_depend>
+  <exec_depend>dsor_worlds</exec_depend>
+  <exec_depend>uuv_simulator</exec_depend>
+
+  <export>
+    <metapackage/>
+  </export>
+</package>

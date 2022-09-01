@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">    
+  <model name="orange_starfish">
+    <link name="orange_starfish_link">
+      <static>false</static>
+      <collision name="orange_starfish">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://orange_starfish/meshes/starfish_orange.dae</uri>
+            <scale>0.09 0.09 0.09</scale>
+          </mesh>
+        </geometry>
+      </collision>
+    
+      <visual name="orange_starfish">
+        <pose>0 0 0 0 0 0</pose>
+        <cast_shadows>false</cast_shadows>
+        <geometry>
+          <mesh>
+            <uri>model://orange_starfish/meshes/starfish_orange.dae</uri>
+            <scale>0.09 0.09 0.09</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <kinematic>1</kinematic>
+     </link>
+  </model> 
+</sdf>

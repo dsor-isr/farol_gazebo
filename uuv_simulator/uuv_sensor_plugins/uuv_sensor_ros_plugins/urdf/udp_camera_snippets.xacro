@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+
+    <!-- UDP camera general macro -->
+    <xacro:macro name="udp_camera_sensor_macro" params="namespace suffix parent_link gst_udp_host gst_udp_port width height hfov update_rate stddev *origin">    
+        
+        <!-- Sensor link -->
+        <link name="${namespace}/udp_camera${suffix}_link">
+            <inertial>
+                <inertia ixx="0.00001" ixy="0.0" ixz="0.0" iyy="0.00001" iyz="0.0" izz="0.00001" />
+                <mass value="0.01" />
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+            </inertial>
+            <xacro:no_collision/>
+        </link>
+
+        <!-- Sensor joint -->
+        <joint name="${namespace}_udp_camera${suffix}_joint" type="revolute">
+            <xacro:insert_block name="origin" />
+            <parent link="${parent_link}" />
+            <child link="${namespace}/udp_camera${suffix}_link" />
+            <limit upper="0" lower="0" effort="0" velocity="0" />
+            <axis xyz="1 0 0"/>
+        </joint>
+    
+    
+        <gazebo reference="${namespace}/udp_camera${suffix}_link">
+            <sensor type="camera" name="camera${suffix}">
+        
+                <!-- Properties of the gazebo camera -->
+                <camera name="camera${suffix}">
+                    <horizontal_fov>${hfov}</horizontal_fov>
+                    <image>
+                        <width>${width}</width>
+                        <height>${height}</height>
+                        <format>R8G8B8</format>
+                    </image>
+                    <clip>
+                        <near>0.05</near>
+                        <far>15000</far>
+                    </clip>
+                    <noise>
+                        <type>gaussian</type>
+                        <mean>0.0</mean>
+                        <stddev>${stddev}</stddev>
+                    </noise>
+                </camera>
+                <always_on>1</always_on>
+                <update_rate>${update_rate}</update_rate>
+                <visualize>true</visualize>
+
+                <!-- The plugin to actually do something with the gazebo camera -->
+                <plugin filename="libgazebo_gst_camera_plugin.so" name="camera${suffix}_controller">
+                    <udpHost>${gst_udp_host}</udpHost>
+                    <udpPort>${gst_udp_port}</udpPort>
+                    <useCuda>false</useCuda>
+                    <robotNamespace>${namespace}</robotNamespace>
+                </plugin>
+            </sensor>
+        </gazebo>
+    </xacro:macro>
+
+</robot>

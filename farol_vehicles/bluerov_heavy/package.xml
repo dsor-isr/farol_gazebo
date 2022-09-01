@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>bluerov_heavy</name>
+  <version>1.0.0</version>
+  <description>
+    The 3D bluerov heavy vehicle description with 8 thrusters. The 3D model was originally
+    obtained at https://github.com/PX4/PX4-SITL_gazebo/blob/master/models/uuv_bluerov2_heavy/
+  </description>
+
+  <author email="thies.lennart.alff@tuhh.de">Thies Lennart Alff</author>
+
+  <maintainer email="marcelo.jacinto@tecnico.ulisboa.pt">Marcelo Jacinto</maintainer>
+  <maintainer email="andre.potes@tecnico.ulisboa.pt">Andre Potes</maintainer>
+
+  <license>MIT</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <exec_depend>gazebo_ros</exec_depend>
+  <exec_depend>gazebo_ros_control</exec_depend>
+  <exec_depend>robot_state_publisher</exec_depend>
+
+  <test_depend>rostest</test_depend>
+  <test_depend>rosunit</test_depend>
+
+</package>

@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+<launch>
+    <arg name="gui" default="true"/>
+    <arg name="paused" default="false"/>
+    <arg name="set_timeout" default="false"/>
+    <arg name="timeout" default="0.0"/>
+    <arg name="use_sim_time" default="false"/>
+
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">      
+        <arg name="world_name" value="worlds/default_worlds/flat_seabed.world"/>
+        <arg name="paused" value="$(arg paused)"/>
+        <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+        <arg name="gui" value="$(arg gui)"/>
+        <arg name="headless" value="false"/>
+        <arg name="debug" value="false"/>
+        <arg name="verbose" value="true"/>
+
+    </include>
+
+    <include file="$(find uuv_assistants)/launch/publish_world_ned_frame.launch"/>
+    <node name="publish_world_models"
+        pkg="uuv_assistants"
+        type="publish_world_models.py"
+        output="screen">
+        <rosparam subst_value="true">
+            meshes:
+                heightmap:
+                    mesh: package://$(find gazebo_worlds)/models/flat_seabed/meshes/flat_seabed.stl
+                    model: flat_seabed
+                seafloor:
+                    plane: [250, 250, 0.1]
+                    pose:
+                        position: [0, 0, -50]
+        </rosparam>
+    </node>
+
+
+</launch>
+
+

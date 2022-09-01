@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- Center of buoyancy -->
+    <xacro:property name="bluerov_cob" value="0 0 0.0420"/>
+    <!--xacro:property name="bluerov_cob" value="0 0 0.3872"/-->
+
+    <!-- Vehicle's actual volume (Gazebo cannot compute the volume out of the mesh) -->
+    <xacro:property name="bluerov_volume" value="${volume}"/>
+
+    <xacro:macro name="bluerov_hydro_model" params="namespace">
+      <!-- List of hydrodynamic models this robot's links -->
+      <link name="${namespace}/base_link">
+        <!-- This flag will make the link neutrally buoyant -->
+        <neutrally_buoyant>0</neutrally_buoyant>
+
+        <!-- Link's volume -->
+        <volume>${bluerov_volume}</volume>
+
+        <box>
+            <width>${x_size}</width>
+            <length>${y_size}</length>
+            <height>${z_size}</height>
+        </box>
+        <center_of_buoyancy>${bluerov_cob}</center_of_buoyancy>
+        <hydrodynamic_model>
+          <type>fossen</type>
+          <!-- Added mass: see p.28 in Berg2012 -->
+          <added_mass>
+            27.08     0      0      0    0     0
+            0       25.952   0      0    0     0
+            0       0      29.9081  0    0     0
+            0       0      0        1    0     0
+            0       0      0        0    1     0
+            0       0      0        0    0     1
+          </added_mass>
+          <!-- Linear damping: see p.31 in Berg2012 -->
+          <linear_damping>-0.1213 -1.1732 -1.1130 -0.5 -0.5 -0.5</linear_damping>
+          <!-- Non-linear damping: see p.30 in Berg2012 -->
+          <!--quadratic_damping>-18.18 -21.66 -36.99 -5.55 -5.55 -5.55</quadratic_damping-->
+          <quadratic_damping>-23.9000 -46.2700 -50.2780 -1 -1 -1</quadratic_damping>
+        </hydrodynamic_model>
+      </link>
+    </xacro:macro>
+</robot>

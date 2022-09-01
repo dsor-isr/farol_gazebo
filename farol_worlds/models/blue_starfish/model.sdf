@@ -1,0 +1,28 @@
+<sdf version="1.5">    
+  <model name="blue_starfish">
+    <link name="blue_starfish_link">
+      <static>false</static>
+      <collision name="blue_starfish">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://blue_starfish/meshes/starfish_blue.dae</uri>
+            <scale>0.09 0.09 0.09</scale>
+          </mesh>
+        </geometry>
+      </collision>
+    
+      <visual name="blue_starfish">
+        <pose>0 0 0 0 0 0</pose>
+        <cast_shadows>false</cast_shadows>
+        <geometry>
+          <mesh>
+            <uri>model://blue_starfish/meshes/starfish_blue.dae</uri>
+            <scale>0.09 0.09 0.09</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <kinematic>1</kinematic>
+     </link>
+  </model> 
+</sdf>

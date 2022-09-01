@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<robot name="mblack" xmlns:xacro="http://www.ros.org/wiki/xacro" >
+  <xacro:arg name="debug" default="0"/>
+  <xacro:arg name="namespace" default="mblack"/>
+  <xacro:arg name="inertial_reference_frame" default="world"/>
+
+  <!-- Include the ROV macro file -->
+  <xacro:include filename="$(find mblack_vehicle)/urdf/base.xacro"/>
+  <xacro:include filename="$(find mblack_vehicle)/urdf/gazebo.xacro"/>
+
+  <!-- Create the mblack -->
+  <xacro:mblack_base 
+    namespace="$(arg namespace)" 
+    inertial_reference_frame="$(arg inertial_reference_frame)">
+    <!-- The underwater object plugin is given as an input block parameter to
+    allow the addition of external models of manipulator units -->
+    <gazebo>
+      <plugin name="uuv_plugin" filename="libuuv_underwater_object_ros_plugin.so">
+        <fluid_density>1028.0</fluid_density>
+        <flow_velocity_topic>hydrodynamics/current_velocity</flow_velocity_topic>
+        <debug>$(arg debug)</debug>
+          <!-- Adding the hydrodynamic and hydrostatic parameters for the vehicle-->
+        <xacro:mblack_hydro_model namespace="$(arg namespace)"/>
+      </plugin>
+    </gazebo>
+  </xacro:mblack_base>
+
+  <!-- Joint state publisher plugin -->
+  <xacro:default_joint_state_publisher namespace="$(arg namespace)" update_rate="50"/>
+
+  <!-- Include extra sensors -->
+
+  <!-- Mount a SONAR  -->
+  <!-- vertical_fov_pixels="114" equiv. to 20 deg -->
+  <xacro:blueview_p900_gpu 
+    namespace="$(arg namespace)" 
+    parent_link="$(arg namespace)/base_link" 
+    suffix=""
+    mass="0.001"
+    camera_name="blueview_p900"
+    update_rate="0.5"
+    horizontal_fov="2.2689280276"
+    vertical_fov_pixels="114"
+    max_distance="30"
+    min_distance="2"
+    ray_skips="1"
+    plot_scaler="2.5"
+    debug="false"
+    scale="1.0 1.0 1.0">     
+    <inertia ixx="0.00001" ixy="0.0" ixz="0.0" iyy="0.00001" iyz="0.0" izz="0.00001"/>
+    <origin xyz="0.5 0 0" rpy="0 0 0"/>
+  </xacro:blueview_p900_gpu>>
+
+</robot>

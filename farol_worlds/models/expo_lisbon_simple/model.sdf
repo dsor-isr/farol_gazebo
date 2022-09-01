@@ -1,0 +1,47 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <model name="expo_lisbon">
+    <static>true</static>
+    <link name="link">
+      <collision name="seabed">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://expo_lisbon_simple/meshes/ExpoLisbon.dae</uri>
+            <scale>1.0 1.0 1.0</scale>
+          </mesh>
+        </geometry>
+      </collision>
+
+      <visual name="seabed">
+        <cast_shadows>false</cast_shadows>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://expo_lisbon_simple/meshes/ExpoLisbon.dae</uri>
+            <scale>1.0 1.0 1.0</scale>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+
+    <link name="ocean_link">
+      <visual name="ocean_surface">
+        <pose>-49.0 -84.0 0 0 0 -0.02</pose>
+        <geometry>
+          <mesh>
+            <uri>file://Media/models/sea_surface_1000m_x_1000m.dae</uri>
+            <scale>0.374 0.70 1</scale>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://Media/materials/scripts/waves.material</uri>
+            <name>Marine3D/SimpleWaves</name>
+          </script>
+        </material>
+      </visual>
+    </link>
+  
+  </model>
+</sdf>

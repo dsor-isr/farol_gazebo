@@ -1,0 +1,52 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+<model name="flat_seabed">
+  <static>true</static>
+  <link name="seabed_link">
+
+  <visual name="surface">
+    <cast_shadows>false</cast_shadows>
+    <pose>0 0 0 0 0 0</pose>
+    <geometry>
+      <box>
+        <size>250 250 0.1</size>
+      </box>
+    </geometry>
+    <material>
+      <script>
+        <uri>file://Media/materials/scripts/water.material</uri>
+        <name>Marine3D/StaticDeepWater</name>
+      </script>
+    </material>
+  </visual>
+
+  <visual name="seafloor">
+    <pose>0 0 0 0 0 0</pose>
+    <geometry>
+      <mesh>
+        <uri>model://flat_seabed/meshes/flat_seabed.stl</uri>
+        <scale>1 1 1</scale>
+      </mesh>
+    </geometry>
+    <material>
+      <script>
+        <uri>file://Media/materials/scripts/sand.material</uri>
+        <name>Marine3D/SandAndStones</name>
+      </script>
+    </material>
+  </visual>
+
+  <collision name="seabed">
+    <pose>0 0 0 0 0 0</pose>
+    <geometry>
+      <mesh>
+        <uri>model://flat_seabed/meshes/flat_seabed.stl</uri>
+        <scale>1.0 1.0 1</scale>
+      </mesh>
+    </geometry>
+  </collision>
+
+  </link>
+</model>
+</sdf>
+

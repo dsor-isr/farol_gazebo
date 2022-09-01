@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>uuv_simulator</name>
+  <version>1.0.0</version>
+  <description>uuv_simulator contains Gazebo plugins and ROS packages for modeling and simulating unmanned underwater vehicles</description>
+
+  <author email="luizricardo.douat@de.bosch.com">Luiz Ricardo Douat</author>
+  <author email="musa.marcusso@de.bosch.com">Musa Morena Marcusso Manhaes</author>
+  <author email="sebastian.scherer2@de.bosch.com">Sebastian Scherer</author>
+
+  <maintainer email="marcelo.jacinto@tecnico.ulisboa.pt">Marcelo Jacinto</maintainer>
+  <maintainer email="andre.potes@tecnico.ulisboa.pt">Andre Potes</maintainer>
+
+  <license>Apache-2.0</license>
+
+  <url type="documentation">https://uuvsimulator.github.io/</url>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <exec_depend>uuv_assistants</exec_depend>
+  <exec_depend>uuv_descriptions</exec_depend>
+  <exec_depend>uuv_gazebo</exec_depend>
+  <exec_depend>uuv_gazebo_plugins</exec_depend>
+  <exec_depend>uuv_gazebo_ros_plugins</exec_depend>
+  <exec_depend>uuv_gazebo_ros_plugins_msgs</exec_depend>
+  <exec_depend>uuv_sensor_ros_plugins_msgs</exec_depend>
+  <exec_depend>uuv_sensor_ros_plugins</exec_depend>
+  <exec_depend>uuv_world_plugins</exec_depend>
+  <exec_depend>uuv_world_ros_plugins</exec_depend>
+  <exec_depend>uuv_world_ros_plugins_msgs</exec_depend>
+
+  <export>
+    <metapackage/>
+  </export>
+</package>

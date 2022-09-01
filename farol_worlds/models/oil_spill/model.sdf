@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">    
+  <model name="oil_spill">
+    <link name="oil">
+    <visual name="oil_spill">
+        <cast_shadows>false</cast_shadows>
+        <pose>0 0 0.05 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://oil_spill/meshes/oil_spill.dae</uri>
+            <scale>1.0 1.0 1.0</scale>
+          </mesh>
+        </geometry>
+        <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Red</name>
+            </script>
+        </material>
+      </visual>
+      <kinematic>1</kinematic>
+    </link>
+  </model> 
+</sdf>

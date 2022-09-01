@@ -1,0 +1,4 @@
+site_name: MRed
+
+nav:
+  - Overview: "README.md"
