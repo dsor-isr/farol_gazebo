@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>bluerov_heavy</name>
+  <name>bluerov_heavy_vehicle</name>
   <version>1.0.0</version>
   <description>
     The 3D bluerov heavy vehicle description with 8 thrusters. The 3D model was originally

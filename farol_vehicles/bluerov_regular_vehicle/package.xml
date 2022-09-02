@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>bluerov_regular</name>
+  <name>bluerov_regular_vehicle</name>
   <version>1.0.0</version>
   <description>
     The 3D regular bluerov vehicle description (6 thrusters configuration). The original

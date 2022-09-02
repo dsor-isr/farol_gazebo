@@ -5,8 +5,8 @@
   <xacro:arg name="inertial_reference_frame" default="world"/>
 
   <!-- Include the ROV macro file -->
-  <xacro:include filename="$(find bluerov_regular)/urdf/base.xacro"/>
-  <xacro:include filename="$(find bluerov_regular)/urdf/gazebo.xacro"/>
+  <xacro:include filename="$(find bluerov_heavy_vehicle)/urdf/base.xacro"/>
+  <xacro:include filename="$(find bluerov_heavy_vehicle)/urdf/gazebo.xacro"/>
 
   <!-- Create the bluerov -->
   <xacro:bluerov_base 

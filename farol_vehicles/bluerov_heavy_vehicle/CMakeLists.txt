@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.3)
-project(bluerov_heavy)
+project(bluerov_heavy_vehicle)
 
 find_package(catkin REQUIRED)
 catkin_package()
