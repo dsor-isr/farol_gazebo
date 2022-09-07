@@ -1,0 +1,208 @@
+# Site metadata
+site_name: Farol Simulation Documentation
+site_url: https://dsor-isr.github.io/farol_gazebo/
+repo_url: https://github.com/dsor-isr/farol_gazebo
+repo_name: farol_gazebo
+edit_uri: edit/main/docs/
+site_author: The Farol Team
+
+# Copyright
+copyright: Copyright &copy 2022 The Farol Team, Dynamical Systems and Ocean Robotics
+  Laboratory (ISR-Lisboa, LARSyS, Portugal)
+
+# Theme Setup
+theme:
+  name: material
+  language: en
+  logo: Images/icons/dsor.png
+  favicon: Images/icons/dsor.png
+  # Font for text and code
+  font:
+    text: Titillium Web
+    code: Roboto Mono
+  # Enabling light and dark mode
+  palette:
+  - media: '(prefers-color-scheme: light)'
+    scheme: default
+    toggle:
+      icon: material/toggle-switch-off-outline
+      name: Switch to dark mode
+  - media: '(prefers-color-scheme: dark)'
+    scheme: slate
+    toggle:
+      icon: material/toggle-switch
+      name: Switch to light mode
+  icon:
+    repo: fontawesome/brands/github
+  # Extra features
+  features:
+    # ---------------------
+    # Navigation
+    # ---------------------
+    # Search index survives navigation
+  - navigation.instant
+    # The URL in the address bar is automatically updated with scroll
+  - navigation.tracking
+    # Top address bar with sections
+    #- navigation.tabs
+    # Bold level 2 sections in left bar
+  - navigation.sections
+    # Documents can be directly attached to sections (see https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/#section-index-pages)
+  - navigation.indexes
+    # Automatic left bar scroll
+  - toc.follow
+    # Back to top button
+  - navigation.top
+    # ---------------------
+    # Search
+    # ---------------------
+    # Search suggestions in search button
+  - search.suggest
+  - search.highlight
+    # Allow sharing a search result
+  - search.share
+
+# Plugins Section
+plugins:
+  # -----------------------------------------------------
+  # Used to have the documentation inside its own package
+  # -----------------------------------------------------
+- monorepo
+- include_dir_to_nav
+- macros:
+      # toggle to true if you are in CD/CI environment
+    on_error_fail: true
+
+  # Include markdown files inside other markdown files
+- include-markdown
+
+  # ---------------------
+  # Search
+  # ---------------------
+  # Better search-bar plugin
+- search:
+    separator: '[\s\-,:!=\[\]()"/]+|(?!\b)(?=[A-Z][a-z])|\.(?!\d)|&[lg]t;'
+    lang:
+    - en
+    - pt
+
+  # ------------------------------------------
+  # Support for tags in the begining of a page
+  # ------------------------------------------
+- tags
+- git-revision-date-localized:
+    type: date
+    fallback_to_build_date: true
+
+# ---------------------------
+# Support for latex equations
+# ---------------------------
+markdown_extensions:
+- pymdownx.arithmatex:
+    generic: true
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+# Cookies consent (Future proofing if we haver enable Google Analytics)
+extra:
+  # ---------------------
+  # Support page versions
+  # ---------------------
+  version:
+    provider: mike
+
+  # ---------------------
+  # Remove the 'made with mkdocs'
+  # ---------------------
+  generator: false
+
+# Configure the packages to show documentation of
+nav:
+- Introduction: index.md
+- Get Started:
+  - pages/get_started/Repository-Structure.md
+  - pages/get_started/Install-Guide.md
+  - pages/get_started/Build-the-Code.md
+# ---------------------------------------------------------------------------------------------------
+# This section is populted automatically by the CI tool when generating the automatic documentation
+# You can change it, to see how it looks localy, but it well get ovewritten by Jenkins when deploying
+# ---------------------------------------------------------------------------------------------------
+- Packages documentation:
+  - Farol Vehicles:
+    - Bluerov Regular:
+      - Documentation: '!include ./farol_vehicles/bluerov_regular/mkdocs.yml'
+    - Mblack Vehicle:
+      - Documentation: '!include ./farol_vehicles/mblack_vehicle/mkdocs.yml'
+    - Mred Vehicle:
+      - Documentation: '!include ./farol_vehicles/mred_vehicle/mkdocs.yml'
+    - Mvector Vehicle:
+      - Documentation: '!include ./farol_vehicles/mvector_vehicle/mkdocs.yml'
+    - Myellow Vehicle:
+      - Documentation: '!include ./farol_vehicles/myellow_vehicle/mkdocs.yml'
+  - Farol Gazebo Bringup:
+    - Documentation: '!include ./farol_gazebo_bringup/mkdocs.yml'
+  - Farol Worlds:
+    - Documentation: '!include ./farol_worlds/mkdocs.yml'
+    - Namespaces:
+      - api/markdown/farol_worlds/Namespaces
+  - Uuv Simulator:
+    - Uuv Assistants:
+      - Documentation: '!include ./uuv_simulator/uuv_assistants/mkdocs.yml'
+      - Classes:
+        - api/markdown/uuv_simulator/uuv_assistants/Classes
+      - Namespaces:
+        - api/markdown/uuv_simulator/uuv_assistants/Namespaces
+    - Uuv Descriptions:
+      - Documentation: '!include ./uuv_simulator/uuv_descriptions/mkdocs.yml'
+      - Classes:
+        - api/markdown/uuv_simulator/uuv_descriptions/Classes
+      - Namespaces:
+        - api/markdown/uuv_simulator/uuv_descriptions/Namespaces
+    - Uuv Gazebo Plugins:
+      - Uuv Gazebo Plugins:
+        - Documentation: '!include ./uuv_simulator/uuv_gazebo_plugins/uuv_gazebo_plugins/mkdocs.yml'
+        - Classes:
+          - api/markdown/uuv_simulator/uuv_gazebo_plugins/uuv_gazebo_plugins/Classes
+        - Namespaces:
+          - api/markdown/uuv_simulator/uuv_gazebo_plugins/uuv_gazebo_plugins/Namespaces
+      - Uuv Gazebo Ros Plugins Msgs:
+        - Documentation: '!include ./uuv_simulator/uuv_gazebo_plugins/uuv_gazebo_ros_plugins_msgs/mkdocs.yml'
+      - Uuv Gazebo Ros Plugins:
+        - Documentation: '!include ./uuv_simulator/uuv_gazebo_plugins/uuv_gazebo_ros_plugins/mkdocs.yml'
+        - Classes:
+          - api/markdown/uuv_simulator/uuv_gazebo_plugins/uuv_gazebo_ros_plugins/Classes
+        - Namespaces:
+          - api/markdown/uuv_simulator/uuv_gazebo_plugins/uuv_gazebo_ros_plugins/Namespaces
+    - Uuv Sensor Plugins:
+      - Uuv Sensor Ros Plugins Msgs:
+        - Documentation: '!include ./uuv_simulator/uuv_sensor_plugins/uuv_sensor_ros_plugins_msgs/mkdocs.yml'
+      - Uuv Sensor Ros Plugins:
+        - Documentation: '!include ./uuv_simulator/uuv_sensor_plugins/uuv_sensor_ros_plugins/mkdocs.yml'
+        - Classes:
+          - api/markdown/uuv_simulator/uuv_sensor_plugins/uuv_sensor_ros_plugins/Classes
+        - Namespaces:
+          - api/markdown/uuv_simulator/uuv_sensor_plugins/uuv_sensor_ros_plugins/Namespaces
+    - Uuv World Plugins:
+      - Uuv World Plugins:
+        - Documentation: '!include ./uuv_simulator/uuv_world_plugins/uuv_world_plugins/mkdocs.yml'
+        - Classes:
+          - api/markdown/uuv_simulator/uuv_world_plugins/uuv_world_plugins/Classes
+        - Namespaces:
+          - api/markdown/uuv_simulator/uuv_world_plugins/uuv_world_plugins/Namespaces
+      - Uuv World Ros Plugins Msgs:
+        - Documentation: '!include ./uuv_simulator/uuv_world_plugins/uuv_world_ros_plugins_msgs/mkdocs.yml'
+      - Uuv World Ros Plugins:
+        - Documentation: '!include ./uuv_simulator/uuv_world_plugins/uuv_world_ros_plugins/mkdocs.yml'
+        - Classes:
+          - api/markdown/uuv_simulator/uuv_world_plugins/uuv_world_ros_plugins/Classes
+        - Namespaces:
+          - api/markdown/uuv_simulator/uuv_world_plugins/uuv_world_ros_plugins/Namespaces
+- Contributing:
+  - Code of Conduct: pages/CODE_OF_CONDUCT.md
+  - Contributing: pages/CONTRIBUTING.md
+  - Changelog: pages/CHANGELOG.md
+  - Acknowledgments: pages/Acknowledgments.md
+  - License: pages/LICENSE.md
