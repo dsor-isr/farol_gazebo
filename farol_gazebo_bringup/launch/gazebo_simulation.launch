@@ -2,8 +2,8 @@
 <launch>
 
     <!-- Parameters and Arguments -->
-    <arg name="name"            /> <!-- Name of the vehicle being launched -->   
-    <arg name="config_package"  /> <!-- Name of the package where the configuration files are stored -->
+    <arg name="name"               default="mvector"/> <!-- Name of the vehicle being launched -->   
+    <arg name="config_package"     /> <!-- Name of the package where the configuration files are stored -->
     <arg name="folder"             default="vehicles" />  <!-- Name of the folder for the configuration files -->     
     <arg name="namepsace"          default="true" />
     <arg name="vehicle_id"         default="0" />
