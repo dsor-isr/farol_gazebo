@@ -1,0 +1,245 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!--                                                                      -->
+  <!-- MACRO FOR THRUSTER UNITS  -->
+  <!--                                                                      -->
+
+  <!-- Provide the propeller mesh in a separate file with the rotation axis
+  over propeller's frame X-axis in DAE (Collada) or STL format.
+  -->
+  <xacro:property name="prop_mesh_file" value="file://$(find amuned_vehicle)/meshes/propeller.dae"/>
+
+  <!--
+    Thruster macro with integration of joint and link. The thrusters should
+    be initialized in the actuators.xacro file.
+  -->
+  <xacro:macro name="thruster_macro" params="robot_namespace thruster_id *origin">
+
+    <!--
+    Dummy link as place holder for the thruster frame,
+    since thrusters can often be inside the collision geometry
+    of the vehicle and may cause internal collisions if set otherwise
+    -->
+    <link name="${robot_namespace}/thruster_${thruster_id}">
+
+      <visual>
+        <geometry>
+          <mesh filename="${prop_mesh_file}" scale="1 1 1" />
+        </geometry>
+      </visual>
+
+      <inertial>
+        <mass value="0.001" />
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <inertia ixx="0.000000017" ixy="0.0" ixz="0.0"
+               iyy="0.000000017" iyz="0.0"
+               izz="0.000000017" />
+      </inertial>
+    </link>
+
+    <!-- Joint between thruster link and vehicle base link -->
+    <joint name="${robot_namespace}/thruster_${thruster_id}_joint" type="continuous">
+      <xacro:insert_block name="origin" />
+      <axis xyz="1 0 0" />
+      <parent link="${robot_namespace}/base_link" />
+      <child link="${robot_namespace}/thruster_${thruster_id}" />
+    </joint>
+
+    <gazebo>
+      <!-- Thruster ROS plugin -->
+      <plugin name="${robot_namespace}_${thruster_id}_thruster_model" filename="libuuv_thruster_ros_plugin.so">
+        <!-- Name of the thruster link -->
+        <linkName>${robot_namespace}/thruster_${thruster_id}</linkName>
+
+        <!-- Name of the joint between thruster and vehicle base link -->
+        <jointName>${robot_namespace}/thruster_${thruster_id}_joint</jointName>
+
+        <!-- Make the thruster aware of its id -->
+        <thrusterID>${thruster_id}</thrusterID>
+
+        <!-- Gain of the input command signal -->
+        <gain>45</gain>
+
+        <!-- Maximum allowed input value for the input signal for thruster unit -->
+        <clampMax>100</clampMax>
+
+        <!-- Minimum allowed value for the input signal for thruster unit -->
+        <clampMin>-100</clampMin>
+
+        <!-- Minimum and maximum thrust force output allowed -->
+        <thrustMin>-36</thrustMin>
+        <thrustMax>36</thrustMax>
+
+        <!--
+        Value from 0 to 1 to set the efficiency of the output thrust force
+        Default value is 1.0
+        -->
+        <thrust_efficiency>1</thrust_efficiency>
+        <propeller_efficiency>1</propeller_efficiency>
+
+        <!-- 1) First order model -->
+        <dynamics>
+          <type>FirstOrder</type>
+          <timeConstant>0.346</timeConstant>
+        </dynamics>
+
+        <!-- 2) Dead-zone nonlinearity described in Bessa, 2006
+        Input: x
+        Output: thrust
+        Function:
+        thrust = rotorConstantL * (x * abs(x) - deltaL), if x * abs(x) <= deltaL
+        thrust = 0, if deltaL < x * abs(x) < deltaR
+        thrust = rotorConstantR * (x * abs(x) - deltaR), if x * abs(x) >= deltaL
+        -->
+        <conversion>
+          <type>Bessa</type>
+          <rotorConstantL>0.00000177778</rotorConstantL>
+          <rotorConstantR>0.00000177778</rotorConstantR>
+          <deltaL>0.0</deltaL>
+          <deltaR>0.0</deltaR>
+        </conversion>
+
+      </plugin>
+    </gazebo>
+
+    <gazebo reference="${robot_namespace}/thruster_${thruster_id}">
+      <selfCollide>false</selfCollide>
+    </gazebo>
+  </xacro:macro>
+
+  <!--- Thruster manager that translates all vector thrust forces/moments from DSOR stack to the UUV thrusters topics -->
+  <xacro:macro name="thruster_manager_macro" params="robot_namespace number_thrusters dsor_topic_thrusters">
+    <gazebo>
+      <plugin name="${robot_namespace}_thruster_manager" filename="libuuv_thruster_manager_ros_plugin.so">
+        <!-- Make the thruster manager aware of the number of thrusters -->
+        <thrustersNumber>${number_thrusters}</thrustersNumber>
+        <dsorTopicThrusters>${dsor_topic_thrusters}</dsorTopicThrusters>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="blueview_p900_gpu"
+  params="namespace parent_link suffix camera_name mass *inertia *origin update_rate horizontal_fov vertical_fov_pixels max_distance min_distance ray_skips plot_scaler debug scale">
+    <xacro:forward_looking_sonar_gpu
+      namespace="${namespace}" 
+      parent_link="${parent_link}" 
+      suffix="${suffix}" 
+      mass="${mass}"
+      camera_name="${camera_name}"
+      update_rate="${update_rate}"
+      horizontal_fov="${horizontal_fov}"
+      vertical_fov_pixels="${vertical_fov_pixels}"
+      max_distance="${max_distance}"
+      min_distance="${min_distance}"
+      ray_skips="${ray_skips}"
+      plot_scaler="${plot_scaler}"
+      debug="${debug}"
+      scale="${scale}"
+      sonar_freq="900e3"
+      bandwidth="29.9e3"
+      sound_speed="1500"
+      source_level="220"
+      sensor_gain="0.2">
+      <xacro:insert_block name="inertia" />
+      <xacro:insert_block name="origin" />
+    </xacro:forward_looking_sonar_gpu>
+  </xacro:macro>
+
+  <xacro:macro name="forward_looking_sonar_gpu"
+    params="namespace parent_link suffix camera_name mass *inertia *origin update_rate horizontal_fov vertical_fov_pixels max_distance min_distance ray_skips plot_scaler debug scale sonar_freq bandwidth sound_speed source_level sensor_gain">
+    <!-- Sensor link -->
+    <link name="${namespace}/forward_sonar${suffix}_link">
+      <inertial>
+        <xacro:insert_block name="inertia" />
+        <mass value="${mass}" />
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+      </inertial>
+      <visual>
+        <geometry>
+          <mesh filename="file://$(find uuv_sensor_ros_plugins)/meshes/p900.dae" scale="${scale}"/>
+        </geometry>
+      </visual>
+      <xacro:no_collision/>
+    </link>
+
+    <joint name="${namespace}_forward_sonar${suffix}_joint" type="revolute">
+      <xacro:insert_block name="origin" />
+      <parent link="${parent_link}" />
+      <child link="${namespace}/forward_sonar${suffix}_link" />
+      <limit upper="0" lower="0" effort="0" velocity="0" />
+      <axis xyz="1 0 0"/>
+    </joint>
+
+    <gazebo reference="${namespace}/forward_sonar${suffix}_link">
+      <sensor name="${namespace}/image_sonar" type="depth">
+        <parent link="${namespace}/forward_sonar_link"/>
+        <xacro:insert_block name="origin" />
+        <visualize>true</visualize>
+        <always_on>true</always_on>
+        <update_rate>${update_rate}</update_rate>
+        <camera>
+          <!-- 90 degrees for the M900-90 -->
+          <!-- <horizontal_fov>1.57079632679</horizontal_fov> -->
+          <!-- 130 degrees for the P900-130 -->
+          <horizontal_fov>${horizontal_fov}</horizontal_fov>
+          <image>
+            <width>512</width>
+            <!-- Set vertical FOV by setting image height -->
+            <!-- For 20 deg. -->
+            <height>${vertical_fov_pixels}</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>     
+            <near>0.1</near>
+            <far>1000</far>
+          </clip>
+          <depth_camera>
+            <output>depths</output>
+          </depth_camera>
+          <save enabled="false">
+            <path>/tmp/camera</path>
+          </save>
+        </camera>
+        <plugin filename="libnps_multibeam_sonar_ros_plugin.so" name="${namespace}_forward_sonar">
+          <!-- Sonar properties -->
+          <sonarFreq>${sonar_freq}</sonarFreq>
+          <bandwidth>${bandwidth}</bandwidth>
+          <soundSpeed>${sound_speed}</soundSpeed>
+          <sourceLevel>${source_level}</sourceLevel>
+          <maxDistance>${max_distance}</maxDistance>
+          <minDistance>${min_distance}</minDistance>
+          <constantReflectivity>true</constantReflectivity>
+          <!-- The CSV databsefile is located at the worlds folder -->
+          <reflectivityDatabaseFile>variationalReflectivityDatabase.csv</reflectivityDatabaseFile>
+          <raySkips>${ray_skips}</raySkips>
+          <sensorGain>${sensor_gain}</sensorGain>
+          <plotScaler>${plot_scaler}</plotScaler>
+          <writeLog>false</writeLog>
+          <debugFlag>${debug}</debugFlag>
+          <writeFrameInterval>5</writeFrameInterval>
+          <!-- This name is prepended to ROS topics -->
+          <cameraName>${camera_name}</cameraName>
+          <!-- ROS publication topics -->
+          <imageTopicName>image_raw</imageTopicName>
+          <cameraInfoTopicName>image_raw/camera_info</cameraInfoTopicName>
+          <pointCloudTopicName>point_cloud</pointCloudTopicName>
+          <depthImageTopicName>image_depth</depthImageTopicName>
+          <depthImageCameraInfoTopicName>image_depth/camera_info</depthImageCameraInfoTopicName>
+          <sonarImageRawTopicName>sonar_image_raw</sonarImageRawTopicName>
+          <sonarImageTopicName>sonar_image</sonarImageTopicName>
+          <frameName>forward_sonar_optical_link</frameName>
+        </plugin>
+      </sensor>
+    </gazebo>
+
+    <joint name="${namespace}/forward_sonar${suffix}_joint" type="fixed">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <parent link="${namespace}/forward_sonar${suffix}_link"/>
+        <child link="${namespace}/forward_sonar${suffix}_optical_frame"/>
+      </joint>
+  
+  	<link name="${namespace}/forward_sonar${suffix}_optical_frame"/>
+  </xacro:macro>
+
+</robot>
