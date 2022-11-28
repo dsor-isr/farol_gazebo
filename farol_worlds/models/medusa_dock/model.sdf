@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">    
+  <model name="medusa_dock">
+    <link name="medusa_dock_link">
+      <static>false</static>
+      <collision name="medusa_dock">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://medusa_dock/meshes/medusa_dock.dae</uri>
+            <scale>1.0 1.0 1.0</scale>
+          </mesh>
+        </geometry>
+      </collision>
+    
+      <visual name="medusa_dock">
+        <pose>0 0 0 0 0 0</pose>
+        <cast_shadows>false</cast_shadows>
+        <geometry>
+          <mesh>
+            <uri>model://medusa_dock/meshes/medusa_dock.dae</uri>
+            <scale>1.0 1.0 1.0</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <kinematic>1</kinematic>
+     </link>
+  </model> 
+</sdf>
