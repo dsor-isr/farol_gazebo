@@ -1,0 +1,3 @@
+[submodule "uuv_simulator/uuv_gazebo_plugins/tether_plugin"]
+	path = uuv_simulator/uuv_gazebo_plugins/tether_plugin
+	url = https://github.com/Ant140/tether_plugin.git
