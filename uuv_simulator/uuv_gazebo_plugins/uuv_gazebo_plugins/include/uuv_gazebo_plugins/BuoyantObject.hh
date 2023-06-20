@@ -145,11 +145,11 @@ class BuoyantObject
 
   // \brief Metacentric width of the robot, used only for surface vessels and
   // floating objects
-  protected: double metacentricWidth;
+  protected: double transverseMetacentricHeight;
 
   /// \brief Metacentric length of the robot, used only for surface vessels and
   /// floating objects
-  protected: double metacentricLength;
+  protected: double longitudinalMetacentricHeight;
 
   /// \brief If the cross section area around water level of the surface vessel
   /// is not given, it will be computed from the object's bounding box
