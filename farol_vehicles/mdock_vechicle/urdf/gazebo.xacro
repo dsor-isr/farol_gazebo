@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- Center of buoyancy -->
+    <xacro:property name="mdock_cob" value="0 0 0"/>
+
+    <!-- Dock's actual volume (Gazebo cannot compute the volume out of the mesh) -->
+    <xacro:property name="mdock_volume" value="0.3"/>
+
+    <xacro:macro name="mdock_hydro_model" params="namespace">
+      <!-- List of hydrodynamic models this robot's links -->
+      <link name="${namespace}/base_link">100000
+
+        <!-- This flag will make the link neutrally buoyant -->
+        <neutrally_buoyant>0</neutrally_buoyant>
+
+        <!-- Link's volume -->
+        <volume>${mdock_volume}</volume>
+
+        <box>
+          <width>1.45</width>
+          <length>2.0</length>
+          <height>1.9</height>
+        </box>
+        <center_of_buoyancy>${mdock_cob}</center_of_buoyancy>
+        <hydrodynamic_model>
+          <type>fossen</type>
+          <!-- Added mass: see p.28 in Berg2012 -->
+          <added_mass>
+            100000     100000     100000     100000     100000     100000
+            100000     100000     100000     100000     100000     100000
+            100000     100000     100000     100000     100000     100000
+            100000     100000     100000     100000     100000     100000
+            100000     100000     100000     100000     100000     100000
+            100000     100000     100000     100000     100000     100000
+          </added_mass>
+          <!-- Linear damping: see p.31 in Berg2012 -->
+          <linear_damping>-100000 -100000 -100000 -100000 -100000 -100000</linear_damping>
+          <!-- Non-linear damping: see p.30 in Berg2012 -->
+          <quadratic_damping>-100000 -100000 -100000 -100000 -100000 -100000</quadratic_damping>
+        </hydrodynamic_model>
+      </link>
+    </xacro:macro>
+
+</robot>
