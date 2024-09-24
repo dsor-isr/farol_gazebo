@@ -76,7 +76,7 @@ namespace gazebo {
         for (int i = 0; i < this->thrustersNumber; i++) {
 
             // Get the topic prefix for each thruster topic to publish
-            topicPrefix =  "/" + _model->GetName() + "/thrusters/" + std::to_string(i) + "/input";
+            topicPrefix =  "/" + _model->GetName() + "/thrusters/t" + std::to_string(i) + "/input";
 
             // Advertise the thrust topic
             this->thrustInputPublisher.push_back(this->rosNode->advertise<uuv_gazebo_ros_plugins_msgs::FloatStamped>(topicPrefix, 1));

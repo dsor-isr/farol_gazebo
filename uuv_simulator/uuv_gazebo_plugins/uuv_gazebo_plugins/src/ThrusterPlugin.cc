@@ -146,7 +146,7 @@ namespace gazebo
 
     // Root string for topics
     std::stringstream strs;
-    strs << "/" << _model->GetName() << "/thrusters/" << this->thrusterID << "/";
+    strs << "/" << _model->GetName() << "/thrusters/t" << this->thrusterID << "/";
     this->topicPrefix = strs.str();
 
     // Advertise the thrust topic
