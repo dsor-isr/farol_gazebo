@@ -1,10 +1,12 @@
 <?xml version="1.0" ?>
 <sdf version="1.6">
   <world name="expo_seabed">
+
+    <!-- Physics Simulation and solver parameters -->
     <physics name="default_physics" default="true" type="ode">
-      <max_step_size>0.004</max_step_size>
+      <max_step_size>0.01</max_step_size>
       <real_time_factor>1</real_time_factor>
-      <real_time_update_rate>250</real_time_update_rate>
+      <real_time_update_rate>100</real_time_update_rate>
       <ode>
         <solver>
           <type>quick</type>
@@ -13,7 +15,9 @@
         </solver>
       </ode>
     </physics>
-    <scene>
+
+    <!-- Scene stuff -->
+     <scene>
       <ambient>0.01 0.01 0.01 1.0</ambient>
       <sky>
         <clouds>
@@ -22,7 +26,7 @@
       </sky>
       <shadows>0</shadows>
     </scene>
-
+  
     <!-- Origin of the Lisbon Expo world in GPS coordinates -->
     <spherical_coordinates>
       <latitude_deg>38.765824</latitude_deg>
@@ -46,7 +50,7 @@
       <direction>-0 1.29 -0.20</direction>
       <cast_shadows>false</cast_shadows>
     </light>
-
+    
     <light type="directional" name="Oceanario_light">
       <pose>-122 -260 10 0 0 0</pose>
       <diffuse>1 1 1 1</diffuse>
@@ -69,7 +73,7 @@
       <specular>1 1 1 1</specular>
       <direction>0 -90 0.0</direction>
       <cast_shadows>false</cast_shadows>
-    </light>
+    </light> -->
 
     <!-- Lisbon expo terrain model -->
     <include>
@@ -116,5 +120,6 @@
         <projection_type>perspective</projection_type>
       </camera>
     </gui>
+
   </world>
 </sdf>
