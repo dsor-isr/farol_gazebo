@@ -138,8 +138,6 @@ nav:
       - Documentation: '!include ./farol_vehicles/mblack_vehicle/mkdocs.yml'
     - Mred Vehicle:
       - Documentation: '!include ./farol_vehicles/mred_vehicle/mkdocs.yml'
-    - Mvector Vehicle:
-      - Documentation: '!include ./farol_vehicles/mvector_vehicle/mkdocs.yml'
     - Myellow Vehicle:
       - Documentation: '!include ./farol_vehicles/myellow_vehicle/mkdocs.yml'
   - Farol Gazebo Bringup:

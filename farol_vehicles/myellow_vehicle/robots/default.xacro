@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
 <robot name="myellow" xmlns:xacro="http://www.ros.org/wiki/xacro" >
+
+  <!-- Initial parameters -->
   <xacro:arg name="debug" default="0"/>
   <xacro:arg name="namespace" default="myellow"/>
   <xacro:arg name="inertial_reference_frame" default="world"/>

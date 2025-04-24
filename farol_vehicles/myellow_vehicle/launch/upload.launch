@@ -1,5 +1,6 @@
-<!-- Spawns the myellow vehicle in the simulation -->
+<!-- Spawns the Myellow vehicle in the simulation -->
 <launch>
+
   <!-- Debug flag -->
   <arg name="debug" default="0"/>
 
@@ -17,8 +18,9 @@
 
   <!-- Vehicle's namespace -->
   <arg name="namespace" default="myellow"/>
-  <arg name="world_frame" default="world_ned"/>
+  <arg name="world_frame" default="world"/>
 
+  <!-- Includes the robot description in this file -->
   <param name="robot_description"
     command="$(find xacro)/xacro '$(find myellow_vehicle)/robots/$(arg mode).xacro'
     debug:=$(arg debug) 
