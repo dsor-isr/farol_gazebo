@@ -130,7 +130,7 @@ void UnderwaterObjectPlugin::InitDebug(physics::LinkPtr _link, HydrodynamicModel
   std::string rootTopic = "/debug/forces/" + _link->GetName() + "/";
   std::vector<std::string> topics {"restoring", "damping", "added_mass", "added_coriolis"};
 
-  for (auto topic : topics) {
+  for (const auto &topic : topics) {
     this->hydroPub[_link->GetName() + "/" + topic] = this->node->Advertise<msgs::WrenchStamped>(rootTopic + topic);
   }
 

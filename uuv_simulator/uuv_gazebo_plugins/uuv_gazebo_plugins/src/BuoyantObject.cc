@@ -32,8 +32,8 @@ BuoyantObject::BuoyantObject(physics::LinkPtr _link) {
   this->centerOfBuoyancy.Set(0, 0, 0);
   this->debugFlag = false;
   this->isSubmerged = true;
-  this->metacentricWidth = 0.0;
-  this->metacentricLength = 0.0;
+  this->transverseMetacentricHeight = 0.0;
+  this->longitudinalMetacentricHeight = 0.0;
   this->waterLevelPlaneArea = 0.0;
   this->submergedHeight = 0.0;
   this->isSurfaceVessel = false;
@@ -55,7 +55,7 @@ BuoyantObject::~BuoyantObject() {}
 
 
 void BuoyantObject::SetNeutrallyBuoyant() {
-  
+
   this->neutrallyBuoyant = true;
   // Calculate the equivalent volume for the submerged body
   // so that it will be neutrally buoyant
@@ -78,7 +78,9 @@ void BuoyantObject::GetBuoyancyForce(const ignition::math::Pose3d &_pose, igniti
   mass = this->link->GetInertial()->Mass();
 
   if (!this->isSurfaceVessel) {
-    if (z + height / 2 > 0 && z < 0) {      
+
+    if (z + height / 2 > 0 && z < 0) {
+
       this->isSubmerged = false;
       volume = this->GetVolume() * (std::fabs(z) + height / 2) / height;
     } else if (z + height / 2 < 0) {
@@ -118,8 +120,8 @@ void BuoyantObject::GetBuoyancyForce(const ignition::math::Pose3d &_pose, igniti
     volume = curSubmergedHeight * this->waterLevelPlaneArea;
     buoyancyForce = ignition::math::Vector3d(0, 0, volume * this->fluidDensity * this->g);
     buoyancyTorque = ignition::math::Vector3d(
-      -1 * this->metacentricWidth * sin(_pose.Rot().Roll()) * buoyancyForce.Z(),
-      -1 * this->metacentricLength * sin(_pose.Rot().Pitch()) * buoyancyForce.Z(),
+      -1 * this->transverseMetacentricHeight * sin(_pose.Rot().Roll()) * buoyancyForce.Z(),
+      -1 * this->longitudinalMetacentricHeight * sin(_pose.Rot().Pitch()) * buoyancyForce.Z(),
       0);
 
     // Store the restoring force vector, if needed
@@ -132,7 +134,7 @@ void BuoyantObject::GetBuoyancyForce(const ignition::math::Pose3d &_pose, igniti
 
 
 void BuoyantObject::ApplyBuoyancyForce() {
-  
+
   // Link's pose
   ignition::math::Pose3d pose;
   pose = this->link->WorldPose();
@@ -176,7 +178,7 @@ void BuoyantObject::SetFluidDensity(double _fluidDensity) {
 }
 
 
-double BuoyantObject::GetFluidDensity() { 
+double BuoyantObject::GetFluidDensity() {
   return this->fluidDensity;
 }
 
@@ -187,7 +189,7 @@ void BuoyantObject::SetCoB(const ignition::math::Vector3d &_centerOfBuoyancy) {
 
 
 ignition::math::Vector3d BuoyantObject::GetCoB() {
-  return this->centerOfBuoyancy; 
+  return this->centerOfBuoyancy;
 }
 
 
@@ -197,18 +199,18 @@ void BuoyantObject::SetGravity(double _g) {
 }
 
 
-double BuoyantObject::GetGravity() { 
-  return this->g; 
+double BuoyantObject::GetGravity() {
+  return this->g;
 }
 
 
-void BuoyantObject::SetDebugFlag(bool _debugOn) { 
-  this->debugFlag = _debugOn; 
+void BuoyantObject::SetDebugFlag(bool _debugOn) {
+  this->debugFlag = _debugOn;
 }
 
 
-bool BuoyantObject::GetDebugFlag() { 
-  return this->debugFlag; 
+bool BuoyantObject::GetDebugFlag() {
+  return this->debugFlag;
 }
 
 
@@ -224,7 +226,7 @@ void BuoyantObject::SetStoreVector(std::string _tag) {
 ignition::math::Vector3d BuoyantObject::GetStoredVector(std::string _tag) {
 
   if (!this->debugFlag) return ignition::math::Vector3d(0, 0, 0);
-  
+
   if (this->hydroWrench.count(_tag)) {
     return this->hydroWrench[_tag];
   } else {
@@ -234,9 +236,9 @@ ignition::math::Vector3d BuoyantObject::GetStoredVector(std::string _tag) {
 
 
 void BuoyantObject::StoreVector(std::string _tag, ignition::math::Vector3d _vec) {
-  
+
   if (!this->debugFlag) return;
-  
+
   // Test if field exists
   if (this->hydroWrench.count(_tag))
     this->hydroWrench[_tag] = _vec;

@@ -93,8 +93,8 @@
           -->
           
           <!--
-          <metacentric_width>0.0</metacentric_width>
-          <metacentric_length>0.0</metacentric_length>
+          <transverse_metacentric_height>0.0</transverse_metacentric_height>
+          <longitudinal_metacentric_height>0.0</longitudinal_metacentric_height>
           <submerged_height>0.0</submerged_height>
           -->
         </hydrodynamic_model>
