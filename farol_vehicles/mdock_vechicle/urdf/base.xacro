@@ -45,21 +45,21 @@
           -->
           <inertial>
             <mass value="${mass}" />
-            <origin xyz="${cog}" rpy="0 0 0"/>
+            <origin xyz="${cog}" rpy="0 0 3.141592653589793"/>
             <inertia ixx="0" ixy="1000" ixz="1000"
             iyy="0" iyz="1000"
             izz="0" />  
           </inertial>
 
           <visual>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <origin xyz="0 0 0" rpy="0 0 3.141592653589793"/>
             <geometry>
               <mesh filename="${visual_mesh_file}" scale="1 1 1" />
             </geometry>
           </visual>
 
           <collision>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <origin xyz="0 0 0" rpy="0 0 3.141592653589793"/>
             <geometry>
               <mesh filename="${collision_mesh_file}" scale="1 1 1" />
             </geometry>

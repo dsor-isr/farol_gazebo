@@ -9,7 +9,7 @@
 
     <xacro:macro name="mdock_hydro_model" params="namespace">
       <!-- List of hydrodynamic models this robot's links -->
-      <link name="${namespace}/base_link">100000
+      <link name="${namespace}/base_link">
 
         <!-- This flag will make the link neutrally buoyant -->
         <neutrally_buoyant>0</neutrally_buoyant>
